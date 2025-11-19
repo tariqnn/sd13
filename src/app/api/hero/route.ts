@@ -1,23 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { uploadFile, deleteFile } from '@/lib/upload'
+import { mockHeroContent } from '@/data/mockData'
 
 export async function GET() {
   try {
-    const { data: heroContent, error } = await supabase
-      .from('hero_content')
-      .select('*')
-      .single()
-    
-    if (error) {
-      console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Failed to fetch hero content' }, { status: 500 })
+    // Try to fetch from database, fallback to mock data
+    try {
+      const { data: heroContent, error } = await supabase
+        .from('hero_content')
+        .select('*')
+        .single()
+      
+      if (!error && heroContent) {
+        return NextResponse.json(heroContent)
+      }
+    } catch (dbError) {
+      console.log('Database not available, using mock data')
     }
     
-    return NextResponse.json(heroContent)
+    // Return mock data for preview deployment
+    return NextResponse.json(mockHeroContent)
   } catch (error) {
     console.error('API error:', error)
-    return NextResponse.json({ error: 'Failed to fetch hero content' }, { status: 500 })
+    // Return mock data even on error for preview
+    return NextResponse.json(mockHeroContent)
   }
 }
 
