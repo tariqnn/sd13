@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
+interface Subscriber {
+  email: string
+  name?: string
+  preferences?: {
+    events?: boolean
+  }
+}
+
 export async function GET() {
   try {
     const { data: events, error } = await supabase
@@ -92,13 +100,6 @@ async function sendEventNotification(eventId: string, type: 'created' | 'updated
     }
 
     // Filter subscribers who want event notifications
-    interface Subscriber {
-      email: string
-      name?: string
-      preferences?: {
-        events?: boolean
-      }
-    }
     const eventSubscribers = (subscribers as Subscriber[]).filter((sub: Subscriber) => 
       sub.preferences?.events !== false
     )
