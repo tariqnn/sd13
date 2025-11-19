@@ -30,7 +30,7 @@ export async function deleteFile(bucket: string, path: string): Promise<void> {
   }
 }
 
-export async function getPublicUrl(bucket: string, path: string): Promise<string> {
+export function getPublicUrl(bucket: string, path: string): string {
   const { data: { publicUrl } } = supabase.storage
     .from(bucket)
     .getPublicUrl(path)
