@@ -71,11 +71,15 @@ async function setupSupabaseDatabase() {
       }
     ]
 
-    for (const program of programs) {
+    for (let i = 0; i < programs.length; i++) {
+      const program = programs[i]
       await prisma.program.upsert({
-        where: { titleEn: program.titleEn },
+        where: { id: `program-${i}` },
         update: {},
-        create: program
+        create: {
+          id: `program-${i}`,
+          ...program
+        }
       })
     }
     console.log('✅ Sample programs created')
@@ -97,11 +101,15 @@ async function setupSupabaseDatabase() {
       }
     ]
 
-    for (const coach of coaches) {
+    for (let i = 0; i < coaches.length; i++) {
+      const coach = coaches[i]
       await prisma.coach.upsert({
-        where: { nameEn: coach.nameEn },
+        where: { id: `coach-${i}` },
         update: {},
-        create: coach
+        create: {
+          id: `coach-${i}`,
+          ...coach
+        }
       })
     }
     console.log('✅ Sample coaches created')
