@@ -1,31 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { uploadFile } from '@/lib/upload'
-import { mockGalleryImages } from '@/data/mockData'
 
 export async function GET() {
   try {
-    // Try to fetch from database, fallback to mock data
-    try {
-      const { data: galleryImages, error } = await supabase
-        .from('gallery_images')
-        .select('*')
-        .eq('is_active', true)
-        .order('order', { ascending: true })
-      
-      if (!error && galleryImages && galleryImages.length > 0) {
-        return NextResponse.json(galleryImages)
-      }
-    } catch (dbError) {
-      console.log('Database not available, using mock data')
+    const { data: galleryImages, error } = await supabase
+      .from('gallery_images')
+      .select('*')
+      .eq('is_active', true)
+      .order('order', { ascending: true })
+    
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json({ error: 'Failed to fetch gallery images' }, { status: 500 })
     }
     
-    // Return mock data for preview deployment
-    return NextResponse.json(mockGalleryImages)
+    return NextResponse.json(galleryImages || [])
   } catch (error) {
     console.error('API error:', error)
-    // Return mock data even on error for preview
-    return NextResponse.json(mockGalleryImages)
+    return NextResponse.json({ error: 'Failed to fetch gallery images' }, { status: 500 })
   }
 }
 

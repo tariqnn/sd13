@@ -1,30 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { uploadFile } from '@/lib/upload'
-import { mockCoaches } from '@/data/mockData'
 
 export async function GET() {
   try {
-    // Try to fetch from database, fallback to mock data
-    try {
-      const { data: coaches, error } = await supabase
-        .from('coaches')
-        .select('*')
-        .order('order', { ascending: true })
-      
-      if (!error && coaches && coaches.length > 0) {
-        return NextResponse.json(coaches)
-      }
-    } catch (dbError) {
-      console.log('Database not available, using mock data')
+    const { data: coaches, error } = await supabase
+      .from('coaches')
+      .select('*')
+      .order('order', { ascending: true })
+    
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json({ error: 'Failed to fetch coaches' }, { status: 500 })
     }
     
-    // Return mock data for preview deployment
-    return NextResponse.json(mockCoaches)
+    return NextResponse.json(coaches || [])
   } catch (error) {
     console.error('API error:', error)
-    // Return mock data even on error for preview
-    return NextResponse.json(mockCoaches)
+    return NextResponse.json({ error: 'Failed to fetch coaches' }, { status: 500 })
   }
 }
 
