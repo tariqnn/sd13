@@ -21,68 +21,68 @@ import { useAuth } from '@/contexts/AuthContext'
 
 interface HeroContent {
   id: string
-  titleEn: string
-  titleAr: string
-  subtitleEn: string
-  subtitleAr: string
-  descriptionEn: string
-  descriptionAr: string
-  videoUrl?: string
+  title_en: string
+  title_ar: string
+  subtitle_en: string
+  subtitle_ar: string
+  description_en: string
+  description_ar: string
+  video_url?: string
 }
 
 interface Program {
   id: string
-  titleEn: string
-  titleAr: string
-  descriptionEn: string
-  descriptionAr: string
+  title_en: string
+  title_ar: string
+  description_en: string
+  description_ar: string
   features: string
-  imageUrl?: string
-  isActive: boolean
+  image_url?: string
+  is_active: boolean
   order: number
 }
 
 interface Coach {
   id: string
-  nameEn: string
-  nameAr: string
-  titleEn: string
-  titleAr: string
-  bioEn: string
-  bioAr: string
+  name_en: string
+  name_ar: string
+  title_en: string
+  title_ar: string
+  bio_en: string
+  bio_ar: string
   experience: number
   specialties: string
-  imageUrl?: string
-  isActive: boolean
+  image_url?: string
+  is_active: boolean
   order: number
 }
 
 interface Event {
   id: string
-  titleEn: string
-  titleAr: string
-  descriptionEn?: string
-  descriptionAr?: string
-  eventDate: string
-  locationEn?: string
-  locationAr?: string
-  eventType: string
-  registrationUrl?: string
-  imageUrl?: string
-  isFeatured: boolean
-  maxParticipants?: number
-  currentParticipants?: number
-  registrationDeadline?: string
+  title_en: string
+  title_ar: string
+  description_en?: string
+  description_ar?: string
+  event_date: string
+  location_en?: string
+  location_ar?: string
+  event_type: string
+  registration_url?: string
+  image_url?: string
+  is_featured: boolean
+  max_participants?: number
+  current_participants?: number
+  registration_deadline?: string
 }
 
 interface GalleryImage {
   id: string
-  titleEn: string
-  titleAr: string
-  descriptionEn?: string
-  descriptionAr?: string
-  imageUrl: string
-  isActive: boolean
+  title_en: string
+  title_ar: string
+  description_en?: string
+  description_ar?: string
+  image_url: string
+  is_active: boolean
   order: number
 }
 
@@ -404,21 +404,21 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">English</h4>
-                      <p className="text-sm text-gray-600 mb-1"><strong>Title:</strong> {heroContent.titleEn}</p>
-                      <p className="text-sm text-gray-600 mb-1"><strong>Subtitle:</strong> {heroContent.subtitleEn}</p>
-                      <p className="text-sm text-gray-600"><strong>Description:</strong> {heroContent.descriptionEn}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Title:</strong> {heroContent.title_en}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Subtitle:</strong> {heroContent.subtitle_en}</p>
+                      <p className="text-sm text-gray-600"><strong>Description:</strong> {heroContent.description_en}</p>
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2">Arabic</h4>
-                      <p className="text-sm text-gray-600 mb-1"><strong>Title:</strong> {heroContent.titleAr}</p>
-                      <p className="text-sm text-gray-600 mb-1"><strong>Subtitle:</strong> {heroContent.subtitleAr}</p>
-                      <p className="text-sm text-gray-600"><strong>Description:</strong> {heroContent.descriptionAr}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Title:</strong> {heroContent.title_ar}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Subtitle:</strong> {heroContent.subtitle_ar}</p>
+                      <p className="text-sm text-gray-600"><strong>Description:</strong> {heroContent.description_ar}</p>
                     </div>
                   </div>
-                  {heroContent.videoUrl && (
+                  {heroContent.video_url && (
                     <div className="mt-4">
                       <p className="text-sm font-medium text-gray-900 mb-2">Video:</p>
-                      <video src={heroContent.videoUrl} controls className="w-full max-w-md rounded-lg" />
+                      <video src={heroContent.video_url} controls className="w-full max-w-md rounded-lg" />
                     </div>
                   )}
                 </div>
