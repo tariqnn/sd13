@@ -212,6 +212,8 @@ export default function Events() {
                         />
                       ) : (
                         <ImagePlaceholder
+                          src="/photos/gallery/DSC06058-2.jpg"
+                          alt={language === 'ar' ? event.title_ar : event.title_en}
                           width={400}
                           height={200}
                           className="w-full h-48 object-cover"
@@ -321,6 +323,8 @@ export default function Events() {
                         />
                       ) : (
                         <ImagePlaceholder
+                          src="/photos/gallery/DSC06058-2.jpg"
+                          alt={language === 'ar' ? event.title_ar : event.title_en}
                           width={300}
                           height={128}
                           className="w-full h-32 object-cover"
