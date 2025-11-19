@@ -1,5 +1,84 @@
 import { useState, useEffect } from 'react'
-import { supabase, Program, Event, Coach, Testimonial, GalleryImage, HeroContent } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
+
+interface HeroContent {
+  id: string
+  title_en: string
+  title_ar: string
+  subtitle_en: string
+  subtitle_ar: string
+  description_en: string
+  description_ar: string
+  video_url?: string
+}
+
+interface Program {
+  id: string
+  title_en: string
+  title_ar: string
+  description_en: string
+  description_ar: string
+  features: string
+  image_url?: string
+  is_active: boolean
+  order: number
+}
+
+interface Event {
+  id: string
+  title_en: string
+  title_ar: string
+  description_en?: string
+  description_ar?: string
+  event_date: string
+  location_en?: string
+  location_ar?: string
+  event_type: string
+  registration_url?: string
+  image_url?: string
+  is_featured: boolean
+  max_participants?: number
+  current_participants?: number
+  registration_deadline?: string
+}
+
+interface Coach {
+  id: string
+  name_en: string
+  name_ar: string
+  title_en: string
+  title_ar: string
+  bio_en: string
+  bio_ar: string
+  experience: number
+  specialties: string
+  image_url?: string
+  is_active: boolean
+  order: number
+}
+
+interface Testimonial {
+  id: string
+  name_en: string
+  name_ar: string
+  text_en: string
+  text_ar: string
+  rating: number
+  image_url?: string
+  is_active: boolean
+  order: number
+}
+
+interface GalleryImage {
+  id: string
+  title_en: string
+  title_ar: string
+  description_en?: string
+  description_ar?: string
+  image_url: string
+  is_active: boolean
+  order: number
+}
 
 export function useSupabaseData() {
   const [heroContent, setHeroContent] = useState<HeroContent[]>([])
