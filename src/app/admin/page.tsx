@@ -451,7 +451,7 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {programs.map((program: any) => (
+                {programs.map((program: Program) => (
                   <div key={program.id} className="bg-gray-50 p-6 rounded-lg">
                     {program.image_url && (
                       <img src={program.image_url} alt={program.title_en} className="w-full h-48 object-cover rounded-lg mb-4" />
@@ -509,7 +509,7 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {coaches.map((coach: any) => (
+                {coaches.map((coach: Coach) => (
                   <div key={coach.id} className="bg-gray-50 p-6 rounded-lg">
                     {coach.image_url && (
                       <img src={coach.image_url} alt={coach.name_en} className="w-full h-48 object-cover rounded-lg mb-4" />
@@ -568,7 +568,7 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {events.map((event: any) => (
+                {events.map((event: Event) => (
                   <div key={event.id} className="bg-gray-50 p-6 rounded-lg">
                     {event.image_url && (
                       <img src={event.image_url} alt={event.title_en} className="w-full h-48 object-cover rounded-lg mb-4" />
@@ -599,7 +599,7 @@ export default function AdminDashboard() {
                             try {
                               const response = await fetch(`/api/events/${event.id}`, { method: 'DELETE' })
                               if (response.ok) {
-                                setEvents(events.filter((e: any) => e.id !== event.id))
+                                setEvents(events.filter((e: Event) => e.id !== event.id))
                                 alert('Event deleted successfully!')
                               } else {
                                 const errorData = await response.json()
@@ -636,7 +636,7 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {galleryImages.map((image: any) => (
+                {galleryImages.map((image: GalleryImage) => (
                   <div key={image.id} className="bg-gray-50 p-6 rounded-lg">
                     <img src={image.image_url} alt={image.title_en || 'Gallery Image'} className="w-full h-48 object-cover rounded-lg mb-4" />
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{image.title_en || 'Untitled'}</h3>
