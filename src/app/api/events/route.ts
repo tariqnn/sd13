@@ -92,7 +92,14 @@ async function sendEventNotification(eventId: string, type: 'created' | 'updated
     }
 
     // Filter subscribers who want event notifications
-    const eventSubscribers = subscribers.filter(sub => 
+    interface Subscriber {
+      email: string
+      name?: string
+      preferences?: {
+        events?: boolean
+      }
+    }
+    const eventSubscribers = (subscribers as Subscriber[]).filter((sub: Subscriber) => 
       sub.preferences?.events !== false
     )
 
