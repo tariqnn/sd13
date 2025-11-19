@@ -42,20 +42,28 @@ export async function POST(request: NextRequest) {
       imageUrl = await uploadFile(image, 'coaches')
     }
 
-    const coach = await prisma.coach.create({
-      data: {
-        nameEn,
-        nameAr,
-        titleEn,
-        titleAr,
-        bioEn,
-        bioAr,
+    const { data: coach, error } = await supabase
+      .from('coaches')
+      .insert([{
+        name_en: nameEn,
+        name_ar: nameAr,
+        title_en: titleEn,
+        title_ar: titleAr,
+        bio_en: bioEn,
+        bio_ar: bioAr,
         experience,
         specialties,
-        imageUrl,
-        order: 0
-      }
-    })
+        image_url: imageUrl,
+        order: 0,
+        is_active: true
+      }])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json({ error: 'Failed to create coach' }, { status: 500 })
+    }
 
     return NextResponse.json(coach)
   } catch (error) {

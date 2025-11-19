@@ -41,40 +41,60 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if hero content already exists
-    const existingHero = await prisma.heroContent.findFirst()
+    const { data: existingHero } = await supabase
+      .from('hero_content')
+      .select('*')
+      .limit(1)
+      .single()
     
     if (existingHero) {
       // Update existing hero content
-      if (video && video.size > 0 && existingHero.videoUrl) {
-        await deleteFile(existingHero.videoUrl)
+      if (video && video.size > 0 && existingHero.video_url) {
+        await deleteFile(existingHero.video_url)
       }
       
-      const heroContent = await prisma.heroContent.update({
-        where: { id: existingHero.id },
-        data: {
-          titleEn,
-          titleAr,
-          subtitleEn,
-          subtitleAr,
-          descriptionEn,
-          descriptionAr,
-          videoUrl: videoUrl || existingHero.videoUrl
-        }
-      })
+      const { data: heroContent, error } = await supabase
+        .from('hero_content')
+        .update({
+          title_en: titleEn,
+          title_ar: titleAr,
+          subtitle_en: subtitleEn,
+          subtitle_ar: subtitleAr,
+          description_en: descriptionEn,
+          description_ar: descriptionAr,
+          video_url: videoUrl || existingHero.video_url
+        })
+        .eq('id', existingHero.id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Supabase error:', error)
+        return NextResponse.json({ error: 'Failed to update hero content' }, { status: 500 })
+      }
+
       return NextResponse.json(heroContent)
     } else {
       // Create new hero content
-      const heroContent = await prisma.heroContent.create({
-        data: {
-          titleEn,
-          titleAr,
-          subtitleEn,
-          subtitleAr,
-          descriptionEn,
-          descriptionAr,
-          videoUrl
-        }
-      })
+      const { data: heroContent, error } = await supabase
+        .from('hero_content')
+        .insert([{
+          title_en: titleEn,
+          title_ar: titleAr,
+          subtitle_en: subtitleEn,
+          subtitle_ar: subtitleAr,
+          description_en: descriptionEn,
+          description_ar: descriptionAr,
+          video_url: videoUrl
+        }])
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Supabase error:', error)
+        return NextResponse.json({ error: 'Failed to create hero content' }, { status: 500 })
+      }
+
       return NextResponse.json(heroContent)
     }
   } catch (error) {

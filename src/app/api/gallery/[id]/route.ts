@@ -8,10 +8,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const galleryImage = await prisma.galleryImage.findUnique({
-      where: { id }
-    })
-    if (!galleryImage) {
+    const { data: galleryImage, error } = await supabase
+      .from('gallery_images')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error || !galleryImage) {
       return NextResponse.json({ error: 'Gallery image not found' }, { status: 404 })
     }
     return NextResponse.json(galleryImage)
@@ -37,15 +40,17 @@ export async function PUT(
     const image = formData.get('image') as File | null
     const removeImage = formData.get('removeImage') === 'true'
 
-    const existingImage = await prisma.galleryImage.findUnique({
-      where: { id }
-    })
+    const { data: existingImage, error: fetchError } = await supabase
+      .from('gallery_images')
+      .select('*')
+      .eq('id', id)
+      .single()
 
-    if (!existingImage) {
+    if (fetchError || !existingImage) {
       return NextResponse.json({ error: 'Gallery image not found' }, { status: 404 })
     }
 
-    let imageUrl = existingImage.imageUrl
+    let imageUrl = existingImage.image_url
 
     if (removeImage && imageUrl) {
       await deleteFile(imageUrl)
@@ -53,22 +58,29 @@ export async function PUT(
     }
 
     if (image && image.size > 0) {
-      if (existingImage.imageUrl) {
-        await deleteFile(existingImage.imageUrl)
+      if (existingImage.image_url) {
+        await deleteFile(existingImage.image_url)
       }
       imageUrl = await uploadFile(image, 'gallery')
     }
 
-    const galleryImage = await prisma.galleryImage.update({
-      where: { id },
-      data: {
-        titleEn,
-        titleAr,
-        imageUrl,
-        isActive,
+    const { data: galleryImage, error: updateError } = await supabase
+      .from('gallery_images')
+      .update({
+        title_en: titleEn,
+        title_ar: titleAr,
+        image_url: imageUrl,
+        is_active: isActive,
         order
-      }
-    })
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (updateError) {
+      console.error('Supabase error:', updateError)
+      return NextResponse.json({ error: 'Failed to update gallery image' }, { status: 500 })
+    }
 
     return NextResponse.json(galleryImage)
   } catch (error) {

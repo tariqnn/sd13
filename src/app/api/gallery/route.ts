@@ -41,16 +41,24 @@ export async function POST(request: NextRequest) {
 
     const imageUrl = await uploadFile(image, 'gallery')
 
-    const galleryImage = await prisma.galleryImage.create({
-      data: {
-        titleEn,
-        titleAr,
-        descriptionEn,
-        descriptionAr,
-        imageUrl,
-        order
-      }
-    })
+    const { data: galleryImage, error } = await supabase
+      .from('gallery_images')
+      .insert([{
+        title_en: titleEn,
+        title_ar: titleAr,
+        description_en: descriptionEn,
+        description_ar: descriptionAr,
+        image_url: imageUrl,
+        order,
+        is_active: true
+      }])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase error:', error)
+      return NextResponse.json({ error: 'Failed to create gallery image' }, { status: 500 })
+    }
 
     return NextResponse.json(galleryImage)
   } catch (error) {

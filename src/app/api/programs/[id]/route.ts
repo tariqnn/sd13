@@ -8,10 +8,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const program = await prisma.program.findUnique({
-      where: { id }
-    })
-    if (!program) {
+    const { data: program, error } = await supabase
+      .from('programs')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error || !program) {
       return NextResponse.json({ error: 'Program not found' }, { status: 404 })
     }
     return NextResponse.json(program)
@@ -40,15 +43,17 @@ export async function PUT(
     const image = formData.get('image') as File | null
     const removeImage = formData.get('removeImage') === 'true'
 
-    const existingProgram = await prisma.program.findUnique({
-      where: { id }
-    })
+    const { data: existingProgram, error: fetchError } = await supabase
+      .from('programs')
+      .select('*')
+      .eq('id', id)
+      .single()
 
-    if (!existingProgram) {
+    if (fetchError || !existingProgram) {
       return NextResponse.json({ error: 'Program not found' }, { status: 404 })
     }
 
-    let imageUrl = existingProgram.imageUrl
+    let imageUrl = existingProgram.image_url
 
     if (removeImage && imageUrl) {
       await deleteFile(imageUrl)
@@ -56,25 +61,32 @@ export async function PUT(
     }
 
     if (image && image.size > 0) {
-      if (existingProgram.imageUrl) {
-        await deleteFile(existingProgram.imageUrl)
+      if (existingProgram.image_url) {
+        await deleteFile(existingProgram.image_url)
       }
       imageUrl = await uploadFile(image, 'programs')
     }
 
-    const program = await prisma.program.update({
-      where: { id },
-      data: {
-        titleEn,
-        titleAr,
-        descriptionEn,
-        descriptionAr,
+    const { data: program, error: updateError } = await supabase
+      .from('programs')
+      .update({
+        title_en: titleEn,
+        title_ar: titleAr,
+        description_en: descriptionEn,
+        description_ar: descriptionAr,
         features,
-        imageUrl,
-        isActive,
+        image_url: imageUrl,
+        is_active: isActive,
         order
-      }
-    })
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (updateError) {
+      console.error('Supabase error:', updateError)
+      return NextResponse.json({ error: 'Failed to update program' }, { status: 500 })
+    }
 
     return NextResponse.json(program)
   } catch (error) {
