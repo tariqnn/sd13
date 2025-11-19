@@ -164,7 +164,9 @@ export default function Testimonials() {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed"
                 >
-                  &ldquo;{language === 'ar' ? testimonials[currentIndex].text_ar : testimonials[currentIndex].text_en}&rdquo;
+                  <span>&ldquo;</span>
+                  {language === 'ar' ? testimonials[currentIndex].text_ar : testimonials[currentIndex].text_en}
+                  <span>&rdquo;</span>
                 </motion.blockquote>
 
               {/* Rating */}
