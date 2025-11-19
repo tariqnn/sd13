@@ -19,6 +19,17 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
+interface HeroContent {
+  id: string
+  titleEn: string
+  titleAr: string
+  subtitleEn: string
+  subtitleAr: string
+  descriptionEn: string
+  descriptionAr: string
+  videoUrl?: string
+}
+
 export default function AdminDashboard() {
   const router = useRouter()
   const { user, loading, isAdmin } = useAuth()
@@ -27,7 +38,7 @@ export default function AdminDashboard() {
   const [coaches, setCoaches] = useState([])
   const [events, setEvents] = useState([])
   const [galleryImages, setGalleryImages] = useState([])
-  const [heroContent, setHeroContent] = useState(null)
+  const [heroContent, setHeroContent] = useState<HeroContent | null>(null)
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
