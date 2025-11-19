@@ -30,14 +30,70 @@ interface HeroContent {
   videoUrl?: string
 }
 
+interface Program {
+  id: string
+  titleEn: string
+  titleAr: string
+  descriptionEn: string
+  descriptionAr: string
+  features: string
+  imageUrl?: string
+  isActive: boolean
+  order: number
+}
+
+interface Coach {
+  id: string
+  nameEn: string
+  nameAr: string
+  titleEn: string
+  titleAr: string
+  bioEn: string
+  bioAr: string
+  experience: number
+  specialties: string
+  imageUrl?: string
+  isActive: boolean
+  order: number
+}
+
+interface Event {
+  id: string
+  titleEn: string
+  titleAr: string
+  descriptionEn?: string
+  descriptionAr?: string
+  eventDate: string
+  locationEn?: string
+  locationAr?: string
+  eventType: string
+  registrationUrl?: string
+  imageUrl?: string
+  isFeatured: boolean
+  maxParticipants?: number
+  currentParticipants?: number
+  registrationDeadline?: string
+}
+
+interface GalleryImage {
+  id: string
+  titleEn: string
+  titleAr: string
+  descriptionEn?: string
+  descriptionAr?: string
+  imageUrl: string
+  isActive: boolean
+  order: number
+}
+
 export default function AdminDashboard() {
   const router = useRouter()
   const { user, loading, isAdmin } = useAuth()
   const [activeTab, setActiveTab] = useState('overview')
-  const [programs, setPrograms] = useState([])
-  const [coaches, setCoaches] = useState([])
-  const [events, setEvents] = useState([])
-  const [galleryImages, setGalleryImages] = useState([])
+  const [programs, setPrograms] = useState<Program[]>([])
+  const [coaches, setCoaches] = useState<Coach[]>([])
+  const [events, setEvents] = useState<Event[]>([])
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
   const [heroContent, setHeroContent] = useState<HeroContent | null>(null)
 
   useEffect(() => {
