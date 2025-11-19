@@ -100,7 +100,8 @@ async function sendEventNotification(eventId: string, type: 'created' | 'updated
     }
 
     // Filter subscribers who want event notifications
-    const eventSubscribers = (subscribers as Subscriber[]).filter((sub: Subscriber) => 
+    const typedSubscribers: Subscriber[] = subscribers as Subscriber[]
+    const eventSubscribers = typedSubscribers.filter((sub: Subscriber) => 
       sub.preferences?.events !== false
     )
 
