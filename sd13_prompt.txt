@@ -1,0 +1,31 @@
+
+# SD13 Sports Academy Website Prompt for Cursor
+
+This file contains a complete specification for generating a production-ready website for SD13 Sports Academy in Amman, Jordan.
+
+The logo is included in the folder so Cursor can directly use it. Make sure to import it into the project where needed.
+
+Please follow all instructions inside carefully.
+
+## Overview
+- Build using **Next.js 15**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**.
+- Animate with **Framer Motion**.
+- Add dynamic content with JSON files for programs, coaches, testimonials.
+- Support English and Arabic with RTL.
+- SEO-ready, responsive, accessible, and PWA-ready.
+
+## Logo
+Use `public/logo.png` as the main logo file.
+
+## Photos
+Add placeholder images for:
+- Programs (`public/photos/programs/`)
+- Coaches (`public/photos/coaches/`)
+- Gallery (`public/photos/gallery/`)
+
+Each placeholder can be a random sports or basketball-related image.
+
+---
+
+[Full Prompt Instructions Below]
+See previous detailed instructions about layout, theme, and pages.

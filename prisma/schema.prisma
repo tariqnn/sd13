@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model HeroContent {
+  id          String   @id @default(cuid())
+  titleEn     String
+  titleAr     String
+  subtitleEn  String
+  subtitleAr  String
+  descriptionEn String
+  descriptionAr String
+  videoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("hero_content")
+}
+
+model Program {
+  id          String   @id @default(cuid())
+  titleEn     String
+  titleAr     String
+  descriptionEn String
+  descriptionAr String
+  imageUrl    String?
+  features    String   // JSON string of features array
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("programs")
+}
+
+model Coach {
+  id          String   @id @default(cuid())
+  nameEn      String
+  nameAr      String
+  titleEn     String
+  titleAr     String
+  bioEn       String
+  bioAr       String
+  imageUrl    String?
+  experience  Int
+  specialties String   // JSON string of specialties array
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coaches")
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  nameEn    String
+  nameAr    String
+  textEn    String
+  textAr    String
+  rating    Int
+  imageUrl  String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  titleEn   String
+  titleAr   String
+  imageUrl  String
+  category  String   @default("general")
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("gallery_images")
+}
+
+model ContactInfo {
+  id        String   @id @default(cuid())
+  phone     String
+  email     String
+  addressEn String
+  addressAr String
+  mapEmbed  String?  // Google Maps embed code
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_info")
+}
+
+model SiteSettings {
+  id        String   @id @default(cuid())
+  siteNameEn String
+  siteNameAr String
+  logoUrl   String?
+  faviconUrl String?
+  metaDescriptionEn String
+  metaDescriptionAr String
+  metaKeywordsEn String
+  metaKeywordsAr String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sd13academy.com/sitemap.xml
+
